@@ -1,6 +1,7 @@
 import psycopg2
+import os
 from createtables import queries, tablequeries
-db_url = "user='postgres' password='bonbon' host='127.0.0.1' port='5432' dbname='questioner'"
+db_url = os.getenv('DATABASE_URL')
 
 
 def connect_to_db():

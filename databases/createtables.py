@@ -1,5 +1,5 @@
 users_table = ''' CREATE TABLE IF NOT EXISTS users (
-                id integer PRIMARY KEY,
+                id serial PRIMARY KEY,
                 public_id VARCHAR (100),
                 firstname VARCHAR (30) NOT NULL,
                 lastname VARCHAR (30) NOT NULL,

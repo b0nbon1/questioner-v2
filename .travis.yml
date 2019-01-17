@@ -18,13 +18,13 @@ before_script:
 script: 
   - export APP_SETTINGS="testing"
   - export SECRET="iamsecret"
-  - export DB_TESTING_URL="dbname='test_questioner' user='postgres' password='bonbon'"
+  - export DB_TESTING_URL="dbname='test_questioner' user='bonvic' password='bonbon'"
   
   - pytest --cov-report term-missing --cov=app
   - coveralls
 
 after_success:
   - coveralls
-  
+
 cache:
   - pip

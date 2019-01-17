@@ -25,7 +25,6 @@ script:
 
 after_success:
   - coveralls
-  - codecov --token=7fec7240-2625-4105-8b2f-f6fbc9022c25
-
+  
 cache:
   - pip

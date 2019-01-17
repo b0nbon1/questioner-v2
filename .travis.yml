@@ -1,23 +1,31 @@
 language: python
+
 python:
- - "3.6"
+  - 3.6
 
 install:
- - pip install -r requirements.txt
- - pip install coveralls
- - pip install psycopg2-binary
+  - pip install -r requirements.txt
+  - pip install coveralls
+  - pip install codecov
 
 services:
-- postgresql
+  - postgresql
 
 before_script:
-- export FLASK_ENV=testing
-- psql -c 'create database test_questioner;' -U postgres
-- export DATABASE_URL = "dbname='test_questioner' host='localhost' port='5432' user='postgres' password=''"
+- psql -c "create user bonvic WITH PASSWORD 'bonbon';" -U postgres
+- psql -c "create database test_questioner;" -U postgres
+
+
 script: 
-  - coverage run --source=app -m pytest && coverage report 
+  - export APP_SETTINGS="testing"
+  - export SECRET="iamsecret"
+  - export DB_TESTING_URL="dbname='test_questioner' user='bonvic' password='bonbon'"
+  
+  - pytest --cov-report term-missing --cov=app
+  - coveralls
 
 after_success:
   - coveralls
 
-cache: pip3
+cache:
+  - pip

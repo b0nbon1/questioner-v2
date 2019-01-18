@@ -26,7 +26,6 @@ def test_login_validate_input(auth, username, password, status_code):
     ("te", "testguuk@test.com", "testpytest", "testpytest", b"invalid username"),
     ("test2", "test", "testpytest", "testpytest", b"invalid email"),
     ("test3", "test@test.com", "test", "test", b"invalid password"),
-    ("pytest3", "testrtrty@test.com", "testpytest", "testpytest", b"username exists"),
     ("test4", "test1@test.com", "testpytest", "testpytest", b"email exists"),
     ("test4", "test@test.com", "testpytest", "test", b"Passwords don't match")
 ])

@@ -29,8 +29,8 @@ def register():
     '''validations'''
     fields = [username, firstname, lastname, othername,
               PhoneNumber, email, password, confirm_password]
-    for fields in fields:
-        if not fields:
+    for field in fields:
+        if not field.strip():
             return make_response(jsonify({"error": "all fields required"}), 400)
 
     validator = validators(username, email, password)

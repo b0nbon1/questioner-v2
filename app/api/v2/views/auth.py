@@ -13,7 +13,7 @@ auth = Blueprint('auth2', __name__, url_prefix='/api/v2/auth')
 def register():
     data = request.get_json()
 
-    try:
+    try:  
         username = data['username']
         firstname = data['firstname']
         lastname = data['lastname']

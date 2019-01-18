@@ -6,7 +6,7 @@ from flask_jwt_extended import create_access_token
 from databases.db_connect import destroy_tables
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def app():
     ''' initialize test module to testing mode '''
     # os.environ["FLASK_ENV"] = "testing"

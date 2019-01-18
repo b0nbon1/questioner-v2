@@ -29,8 +29,8 @@ def register():
     '''validations'''
     fields = [username, firstname, lastname, othername,
               PhoneNumber, email, password, confirm_password]
-    for fields in fields:
-        if not fields:
+    for field in fields:
+        if not field.strip():
             return make_response(jsonify({"error": "all fields required"}), 400)
 
     validator = validators(username, email, password)
@@ -88,7 +88,7 @@ def login():
 
     user = User.get_user(username)
     if not user:
-        return make_response(jsonify({'message': 'user not found'}), 404)
+        return make_response(jsonify({'message': 'wrong user details'}), 404)
     else:
         if check_password_hash(user[10], password):
             public_id = user[1]
@@ -97,5 +97,5 @@ def login():
                                           "message": "Successfully Logged In",
                                           "status": 200}), 200)
         else:
-            return make_response(jsonify({"error": "wrong password",
+            return make_response(jsonify({"error": "wrong user details",
                                           "status": 401})), 401

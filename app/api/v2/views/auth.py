@@ -73,3 +73,29 @@ def register():
     else:
         return make_response(
             jsonify({"error": "Passwords don't match"})), 400
+
+
+@auth.route('/login', methods=['POST'])
+def login():
+    '''login a user to the platform'''
+    data = request.get_json()
+    try:
+        username = data['username']
+        password = data['password']
+    except:
+        return make_response(jsonify({"error": "Please provide a json data",
+                                      "status": 400}), 400)
+
+    user = User.get_user(username)
+    if not user:
+        return make_response(jsonify({'message': 'user not found'}), 404)
+    else:
+        if check_password_hash(user[10], password):
+            public_id = user[1]
+            access_token = create_access_token(identity=public_id)
+            return make_response(jsonify({"access_token": access_token,
+                                          "message": "Successfully Logged In",
+                                          "status": 200}), 200)
+        else:
+            return make_response(jsonify({"error": "wrong password",
+                                          "status": 401})), 401

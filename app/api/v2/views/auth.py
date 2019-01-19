@@ -65,8 +65,8 @@ def register():
                         PhoneNumber, username, email, password)
         new_user.register_user()
         reg_user = User.get_user(username)
-        public_id = reg_user[1]
-        access_token = create_access_token(identity=public_id)
+        id = reg_user[0]
+        access_token = create_access_token(identity=id)
         return make_response(jsonify({"message": "user successfull registered!",
                                       "token": access_token,
                                       "status": 201})), 201
@@ -90,9 +90,9 @@ def login():
     if not user:
         return make_response(jsonify({'message': 'wrong user details'}), 404)
     else:
-        if check_password_hash(user[10], password):
-            public_id = user[1]
-            access_token = create_access_token(identity=public_id)
+        if check_password_hash(user[9], password):
+            id = user[0]
+            access_token = create_access_token(identity=id)
             return make_response(jsonify({"access_token": access_token,
                                           "message": "Successfully Logged In",
                                           "status": 200}), 200)

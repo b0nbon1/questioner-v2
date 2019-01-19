@@ -1,5 +1,6 @@
 import re
 import psycopg2
+from flask import jsonify
 from databases.db_connect import init_db
 
 
@@ -33,7 +34,7 @@ class validators():
                 return True
 
         except(Exception, psycopg2.DatabaseError) as error:
-            return {'error': '{}'.format(error)}, 401
+            return jsonify({'error': '{}'.format(error)}), 401
 
     def email_exists(self):
         try:
@@ -46,4 +47,6 @@ class validators():
             if email:
                 return True
         except(Exception, psycopg2.DatabaseError) as error:
-            return {'error': '{}'.format(error)}, 401
+            return jsonify({'error': '{}'.format(error)}), 401
+
+    

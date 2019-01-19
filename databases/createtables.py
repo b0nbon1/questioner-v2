@@ -1,11 +1,12 @@
+from werkzeug.security import generate_password_hash
+
 users_table = ''' CREATE TABLE IF NOT EXISTS users (
                 id serial PRIMARY KEY,
-                public_id VARCHAR (100),
                 firstname VARCHAR (30) NOT NULL,
                 lastname VARCHAR (30) NOT NULL,
                 othername VARCHAR (30) NOT NULL,
                 username VARCHAR (30) NOT NULL,
-                registered DATE NOT NULL,
+                registered TIMESTAMP,
                 email VARCHAR (30) UNIQUE NOT NULL,
                 PhoneNumber VARCHAR NOT NULL,
                 isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
@@ -14,8 +15,26 @@ users_table = ''' CREATE TABLE IF NOT EXISTS users (
             );
             '''
 
-queries = [users_table]
+password = generate_password_hash('admintest')
+admin = """
+        INSERT INTO users(firstname, lastname, othername, username, email, PhoneNumber, isAdmin, password) VALUES(
+            '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}'
+        )""".format('new', 'ad', 'min', 'testx', 'admintestx@test.com', '80686995', True, password)
+
+meetup = ''' CREATE TABLE IF NOT EXISTS meetups (
+        id serial PRIMARY KEY,
+        location  VARCHAR (50) NOT NULL,
+        images  TEXT,
+        topic   VARCHAR (50) NOT NULL,
+        happeningOn VARCHAR(30) NOT NULL,
+        tags VARCHAR(20),
+        createdOn TIMESTAMP
+        );
+         '''
+
+queries = [users_table, admin, meetup]
 
 """Destroying tables for the test database"""
 table_users = ''' DROP TABLE IF EXISTS users CASCADE '''
-tablequeries = [table_users]
+table_meetups = ''' DROP TABLE IF EXISTS meetups CASCADE '''
+tablequeries = [table_users, table_meetups]

@@ -9,24 +9,24 @@ def test_create_meetup(meetups):
 
 
 def test_get_all_meetups(meetups, client, headers):
-    assert client.get('/api/v1/meetup/upcoming',
+    assert client.get('/api/v2/meetup/upcoming',
                       headers=headers).status_code == 200
 
 
 def test_get_specific_meetup(meetups, client, headers):
-    assert client.get('/api/v1/meetup/1', headers=headers).status_code == 200
+    assert client.get('/api/v2/meetup/1', headers=headers).status_code == 200
 
 
 def test_get_specific_meetup_not_found(meetups, client, headers):
-    assert client.get('/api/v1/meetup/2', headers=headers).status_code == 404
+    assert client.get('/api/v2/meetup/2', headers=headers).status_code == 404
 
 
 @pytest.mark.parametrize(('url', 'status', 'status_code'), (
-    ('/api/v1/meetup/2/rsvps', 'yes', 404),
-    ('/api/v1/meetup/1/rsvps', 'kgggiyt', 406),
-    ('/api/v1/meetup/1/rsvps', 'yes', 201),
-    ('/api/v1/meetup/1/rsvps', 'maybe', 201),
-    ('/api/v1/meetup/1/rsvps', 'no', 201),
+    ('/api/v2/meetup/2/rsvps', 'yes', 404),
+    ('/api/v2/meetup/1/rsvps', 'kgggiyt', 406),
+    ('/api/v2/meetup/1/rsvps', 'yes', 201),
+    ('/api/v2/meetup/1/rsvps', 'maybe', 201),
+    ('/api/v2/meetup/1/rsvps', 'no', 201),
 ))
 def test_create_rsvp(meetups, url, status, status_code):
     response = meetups.rsvp(url, status)
@@ -34,10 +34,10 @@ def test_create_rsvp(meetups, url, status, status_code):
 
 
 def test_delete_meetup(client, headers):
-    assert client.delete('/api/v1/meetup/1',
+    assert client.delete('/api/v2/meetup/1',
                          headers=headers).status_code == 200
 
 
 def test_delete_meetup_not_found(client, headers):
-    assert client.delete('/api/v1/meetup/1',
+    assert client.delete('/api/v2/meetup/1',
                          headers=headers).status_code == 404

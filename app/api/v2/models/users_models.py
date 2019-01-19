@@ -20,7 +20,6 @@ class User(object):
 
     def register_user(self):
         new_user = {
-            "public_id": str(uuid.uuid4()),
             'firstname': self.firstname,
             'lastname': self.lastname,
             'othername': self.othername,
@@ -32,8 +31,8 @@ class User(object):
             "password": self.password
         }
         try:
-            query = """INSERT INTO USERS(public_id, firstname, lastname, othername, PhoneNumber, isAdmin, registered, username, email, password) 
-                    VALUES (%(public_id)s, %(firstname)s, %(lastname)s, %(othername)s, %(PhoneNumber)s, %(isAdmin)s,%(registered)s, %(username)s, %(email)s,%(password)s) """
+            query = """INSERT INTO USERS(firstname, lastname, othername, PhoneNumber, isAdmin, registered, username, email, password) 
+                    VALUES (%(firstname)s, %(lastname)s, %(othername)s, %(PhoneNumber)s, %(isAdmin)s,%(registered)s, %(username)s, %(email)s,%(password)s) """
             cur = self.db.cursor()
             cur.execute(query, new_user)
             self.db.commit()
@@ -47,10 +46,10 @@ class User(object):
             conn = init_db()
             cur = conn.cursor()
             cur.execute("select * from users where username = %s", ([username]))
-            email = cur.fetchone()
+            user = cur.fetchone()
             cur.close()
             conn.close()
-            if email:
-                return email
+            if user:
+                return user
         except(Exception, psycopg2.DatabaseError) as error:
             return {'error': '{}'.format(error)}, 401

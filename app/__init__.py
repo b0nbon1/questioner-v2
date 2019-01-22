@@ -1,4 +1,5 @@
 import os
+import datetime
 from flask_jwt_extended import JWTManager
 from flask import Flask, jsonify, make_response
 from config import app_config
@@ -10,6 +11,7 @@ def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(app_config[config_name])
     app.config['JWT_SECRET_KEY'] = 'yjfhrtht'
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days=1)
     jwt = JWTManager(app)
     init_db(config_name)
     destroy_tables()
@@ -30,14 +32,17 @@ def create_app(config_name):
     '''error handlers for main page'''
     @app.errorhandler(404)
     def page_not_found(error):
-        return jsonify({'error': 'Url not found. Check your url and try again', 'status': 404}), 404
+        return jsonify({'error': 'Url not found. Check your url and try again',
+                        'status': 404}), 404
 
     @app.errorhandler(405)
     def method_not_allowed(error):
-        return jsonify({'error': 'Method not allowed', 'status': 405}), 405
+        return jsonify({'error': 'Method not allowed',
+                        'status': 405}), 405
 
     @app.errorhandler(400)
     def bad_request(error):
-        return jsonify({'error': 'Bad request. Check the syntax', 'status': 400}), 400
+        return jsonify({'error': 'Bad request. Check the syntax',
+                        'status': 400}), 400
 
     return app

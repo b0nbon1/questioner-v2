@@ -1,7 +1,6 @@
 import psycopg2
 import os
 from .createtables import queries, tablequeries
-from config import app_config
 
 
 def init_db(config_name=None):

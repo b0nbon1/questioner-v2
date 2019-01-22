@@ -3,7 +3,7 @@ import os
 import json
 from app import create_app
 from flask_jwt_extended import create_access_token
-from databases.db_connect import destroy_tables
+from databases.db_connect import init_db, destroy_tables
 
 
 @pytest.fixture(scope="module")
@@ -11,6 +11,7 @@ def app():
     ''' initialize test module to testing mode '''
     # os.environ["FLASK_ENV"] = "testing"
     app = create_app("testing")
+
     app.testing= True
     print("db connected")
     yield app
@@ -23,7 +24,7 @@ class Setup_auth():
     def __init__(self, client):
         self._client = client
 
-    def login(self, username='pytest3', password='testpytest'):
+    def login(self, username='testx', password='admintest'):
         return self._client.post(
             '/api/v2/auth/login',
             data=json.dumps({'username': username, 'password': password}),
@@ -70,8 +71,6 @@ def client(app):
 # creates a jwt header for test authentications
 @pytest.fixture
 def headers(app, auth):
-    auth.register()
-    auth.update_user()
     response = auth.login()
     token = json.loads(response.get_data(as_text=True))['access_token']
     headers = {'Authorization': 'Bearer {}'.format(token)}

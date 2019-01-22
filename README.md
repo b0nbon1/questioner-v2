@@ -44,4 +44,4 @@ this is crowd platform where meetups are created questions are asked
 * use `pytest -v` to run the tests
 
 # Written by: Bonvic Bundi
-#### Copyright © Andela 2019 
+#### Copyright © B0nbon 2019 

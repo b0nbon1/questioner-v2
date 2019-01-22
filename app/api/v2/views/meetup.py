@@ -63,3 +63,38 @@ def get_meetup(meetup_id):
                                       "status": 404})), 404
     return make_response(jsonify({"status": 200},
                                  {"data": meetup})), 200
+
+
+@meetup.route('/<int:meetup_id>', methods=['DELETE'])
+@jwt_required
+def delete_question(meetup_id):
+
+    return Meetup.delete_meetup(meetup_id)
+
+
+@meetup.route('/<int:meetup_id>/rsvps', methods=['POST'])
+@jwt_required
+def create_rsvp(meetup_id):
+    userid = get_jwt_identity()
+    meetups = Meetup.get_meetup()
+    meetup = [
+            meetup for meetup in meetups if meetup['id'] == meetup_id]
+    if len(meetup) == 0:
+        return make_response(jsonify(
+            {
+                "status": 404,
+                "error": "error can't find meetup data"
+            })), 404
+    data = request.get_json()
+    status = data['status']
+    status = status.lower()
+    if status == 'yes' or status == 'maybe' or status == 'no':
+
+        return Meetup.new_rsvp(status, meetup_id, userid)
+
+    else:
+        return make_response(jsonify(
+            {
+                "status": 406,
+                "error": "there is no such status"
+            })), 406

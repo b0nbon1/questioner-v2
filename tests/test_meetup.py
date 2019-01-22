@@ -33,11 +33,12 @@ def test_create_rsvp(meetups, url, status, status_code):
     assert response.status_code == status_code
 
 
-def test_delete_meetup(client, headers):
-    assert client.delete('/api/v2/meetup/1',
+def test_delete_meetup(client, headers, meetups):
+    meetups.Create_meetup()
+    assert client.delete('/api/v2/meetup/2',
                          headers=headers).status_code == 200
 
 
 def test_delete_meetup_not_found(client, headers):
-    assert client.delete('/api/v2/meetup/1',
+    assert client.delete('/api/v2/meetup/3',
                          headers=headers).status_code == 404

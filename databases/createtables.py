@@ -32,9 +32,18 @@ meetup = ''' CREATE TABLE IF NOT EXISTS meetups (
         );
          '''
 
-queries = [users_table, admin, meetup]
+rsvps = ''' CREATE TABLE IF NOT EXISTS rsvps (
+    id serial PRIMARY KEY,
+    user_id integer REFERENCES users(id),
+    meetup_id integer REFERENCES meetups(id),
+    status VARCHAR (10) NOT NULL
+    );
+    '''
+
+queries = [users_table, admin, meetup, rsvps]
 
 """Destroying tables for the test database"""
 table_users = ''' DROP TABLE IF EXISTS users CASCADE '''
 table_meetups = ''' DROP TABLE IF EXISTS meetups CASCADE '''
-tablequeries = [table_users, table_meetups]
+table_rsvps = ''' DROP TABLE IF EXISTS rsvps CASCADE '''
+tablequeries = [table_users, table_meetups, table_rsvps]

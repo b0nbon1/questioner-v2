@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash
 
-users_table = ''' CREATE TABLE IF NOT EXISTS users (
+user = ''' CREATE TABLE IF NOT EXISTS users (
                 id serial PRIMARY KEY,
                 firstname VARCHAR (30) NOT NULL,
                 lastname VARCHAR (30) NOT NULL,
@@ -32,18 +32,45 @@ meetup = ''' CREATE TABLE IF NOT EXISTS meetups (
         );
          '''
 
-rsvps = ''' CREATE TABLE IF NOT EXISTS rsvps (
+rsvp = ''' CREATE TABLE IF NOT EXISTS rsvps (
     id serial PRIMARY KEY,
-    user_id integer REFERENCES users(id),
-    meetup_id integer REFERENCES meetups(id),
+    user_id integer REFERENCES users(id) ON DELETE CASCADE,
+    meetup_id integer REFERENCES meetups(id) ON DELETE CASCADE,
     status VARCHAR (10) NOT NULL
     );
     '''
 
-queries = [users_table, admin, meetup, rsvps]
+question = ''' CREATE TABLE IF NOT EXISTS questions(
+                id serial PRIMARY KEY,
+                user_id integer REFERENCES users(id) ON DELETE CASCADE,
+                meeetup_id integer REFERENCES meetups(id) ON DELETE CASCADE,
+                title VARCHAR (50) NOT NULL,
+                body VARCHAR (500) NOT NULL
+    );
+'''
+
+comment = '''CREATE TABLE IF NOT EXISTS comments(
+            id serial PRIMARY KEY,
+            user_id integer REFERENCES users(id) ON DELETE CASCADE,
+            question_id integer REFERENCES questions(id) ON DELETE CASCADE,
+            comment VARCHAR (30) NOT NULL
+    );
+'''
+vote = '''CREATE TABLE IF NOT EXISTS votes(
+            id serial PRIMARY KEY,
+            user_id integer REFERENCES users(id) ON DELETE CASCADE,
+            question_id integer REFERENCES questions(id) ON DELETE CASCADE,
+            downvote integer,
+            upvote integer
+    );
+    '''
+queries = [user, admin, meetup, rsvp, question, comment, vote]
 
 """Destroying tables for the test database"""
 table_users = ''' DROP TABLE IF EXISTS users CASCADE '''
 table_meetups = ''' DROP TABLE IF EXISTS meetups CASCADE '''
 table_rsvps = ''' DROP TABLE IF EXISTS rsvps CASCADE '''
-tablequeries = [table_users, table_meetups, table_rsvps]
+table_questions = ''' DROP TABLE IF EXISTS questions CASCADE '''
+table_comments = '''DROP TABLE IF EXISTS comments CASCADE'''
+table_votes = '''DROP TABLE IF EXISTS votes CASCADE'''
+tablequeries = [table_users, table_meetups, table_rsvps, table_questions, table_comments, table_votes]

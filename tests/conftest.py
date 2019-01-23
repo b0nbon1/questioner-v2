@@ -121,8 +121,7 @@ class Setup_question():
         self._client = client
         self._headers = headers
 
-    def Create_question(self, user=2,
-                        meetup=1,
+    def Create_question(self, meetup=1,
                         title='flask',
                         body='There available by injected humour, or randomised words which don\'t look even slightly believable?'
                         ):

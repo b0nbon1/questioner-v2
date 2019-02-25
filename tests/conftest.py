@@ -126,8 +126,8 @@ class Setup_question():
                         body='There available by injected humour, or randomised words which don\'t look even slightly believable?'
                         ):
         return self._client.post(
-            '/api/v2/question/',
-            data=json.dumps({'user': user,
+            '/api/v2/questions/',
+            data=json.dumps({
                              'meetup': meetup,
                              'title': title,
                              'body': body,
@@ -146,3 +146,27 @@ class Setup_question():
 @pytest.fixture
 def questions(client, headers):
     return Setup_question(client, headers)
+
+
+class Setup_comments():
+    # setups the tests
+    def __init__(self, client, headers):
+        self._client = client
+        self._headers = headers
+
+    def Create_comment(self,
+                        body='There available by injected humour, or randomised words which don\'t look even slightly believable?'
+                        ):
+        return self._client.post(
+            '/api/v2/comments/',
+            data=json.dumps({
+                             'body': body,
+                             }),
+            content_type='application/json', headers=self._headers
+        )
+
+
+# creates a fixture for class questions
+@pytest.fixture
+def comments(client, headers):
+    return Setup_comments(client, headers)

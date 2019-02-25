@@ -6,7 +6,7 @@ user = ''' CREATE TABLE IF NOT EXISTS users (
                 lastname VARCHAR (30) NOT NULL,
                 othername VARCHAR (30) NOT NULL,
                 username VARCHAR (30) NOT NULL,
-                registered TIMESTAMP,
+                registered TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW() AT TIME ZONE 'UTC'),
                 email VARCHAR (30) UNIQUE NOT NULL,
                 PhoneNumber VARCHAR NOT NULL,
                 isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
@@ -28,7 +28,7 @@ meetup = ''' CREATE TABLE IF NOT EXISTS meetups (
         topic   VARCHAR (50) NOT NULL,
         happeningOn VARCHAR(30) NOT NULL,
         tags VARCHAR(20),
-        createdOn TIMESTAMP
+        createdOn TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW() AT TIME ZONE 'UTC')
         );
          '''
 
@@ -43,7 +43,7 @@ rsvp = ''' CREATE TABLE IF NOT EXISTS rsvps (
 question = ''' CREATE TABLE IF NOT EXISTS questions(
                 id serial PRIMARY KEY,
                 user_id integer REFERENCES users(id) ON DELETE CASCADE,
-                meeetup_id integer REFERENCES meetups(id) ON DELETE CASCADE,
+                meeetup integer REFERENCES meetups(id) ON DELETE CASCADE,
                 title VARCHAR (50) NOT NULL,
                 body VARCHAR (500) NOT NULL
     );
@@ -64,7 +64,7 @@ vote = '''CREATE TABLE IF NOT EXISTS votes(
             upvote integer
     );
     '''
-queries = [user, admin, meetup, rsvp, question, comment, vote]
+queries = [user, meetup, rsvp, question, comment, vote, admin]
 
 """Destroying tables for the test database"""
 table_users = ''' DROP TABLE IF EXISTS users CASCADE '''

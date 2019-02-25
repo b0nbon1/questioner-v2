@@ -2,7 +2,7 @@ import pytest
 from flask import json
 
 
-def test_create_questions(comments):
+def test_create_comments(comments):
     response = comments.Create_comment()
 
     assert response.status_code == 201
